@@ -13,7 +13,7 @@ public class ConversionPostFija {
  
     public static Cola<String> convertir(Cola<String> colaOriginal) throws ColaException, PilaException {
         Cola<String> postfija = new Cola<>();
-        Pila<String> pilaAux = new Pila<>();
+        Pila<String> pilaTemporal = new Pila<>();
  
         while (!colaOriginal.estaVacia()) {
             String token = colaOriginal.desencolar();
@@ -24,30 +24,30 @@ public class ConversionPostFija {
  
             } else if (ColaFormulaOriginal.esAperturaSimbolo(token)) {
                 // simbolo de apertura -> se apila sin importar que haya en la cima
-                pilaAux.apilar(token);
+                pilaTemporal.apilar(token);
  
             } else if (ColaFormulaOriginal.esCierreSimbolo(token)) {
                 // se desapila todo hasta encontrar la apertura correspondiente
-                while (!pilaAux.estaVacia() && !ColaFormulaOriginal.esAperturaSimbolo(pilaAux.verTope())) {
-                    postfija.encolar(pilaAux.desapilar());
+                while (!pilaTemporal.estaVacia() && !ColaFormulaOriginal.esAperturaSimbolo(pilaTemporal.verTope())) {
+                    postfija.encolar(pilaTemporal.desapilar());
                 }
-                if (!pilaAux.estaVacia()) {
-                    pilaAux.desapilar(); // se descarta, no se agrega a la cola
+                if (!pilaTemporal.estaVacia()) {
+                    pilaTemporal.desapilar(); // se descarta, no se agrega a la cola
                 }
  
             } else if (ColaFormulaOriginal.esOperador(token)) {
                 // se apila si su prioridad es mayor a la del tope (o si esta vacia)
                 // si no, se van sacando los de la pila hasta que se pueda apilar
-                while (!pilaAux.estaVacia() && prioridad(pilaAux.verTope()) >= prioridad(token)) {
-                    postfija.encolar(pilaAux.desapilar());
+                while (!pilaTemporal.estaVacia() && prioridad(pilaTemporal.verTope()) >= prioridad(token)) {
+                    postfija.encolar(pilaTemporal.desapilar());
                 }
-                pilaAux.apilar(token);
+                pilaTemporal.apilar(token);
             }
         }
  
         // lo que quede en la pila se pasa completo a la cola postfija
-        while (!pilaAux.estaVacia()) {
-            postfija.encolar(pilaAux.desapilar());
+        while (!pilaTemporal.estaVacia()) {
+            postfija.encolar(pilaTemporal.desapilar());
         }
  
         return postfija;
