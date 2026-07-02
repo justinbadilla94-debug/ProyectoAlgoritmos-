@@ -35,9 +35,9 @@ public class Cola<T> {
     }
  
     // Saca y devuelve el elemento del frente
-    public T desencolar() {
+    public T desencolar() throws ColaException {
         if (estaVacia()) {
-            throw new RuntimeException("No se puede desencolar: la cola esta vacia.");
+            throw new ColaException("No se puede desencolar: la cola esta vacia.");
         }
         T dato = frente.dato;
         frente = frente.siguiente;
@@ -49,9 +49,9 @@ public class Cola<T> {
     }
  
     // Devuelve el elemento del frente sin sacarlo
-    public T verFrente() {
+    public T verFrente() throws ColaException {
         if (estaVacia()) {
-            throw new RuntimeException("La cola esta vacia.");
+            throw new ColaException("La cola esta vacia.");
         }
         return frente.dato;
     }
