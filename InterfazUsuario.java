@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package rpncalculadora;
 
 import java.util.HashMap;
@@ -9,91 +13,82 @@ import javax.swing.JOptionPane;
  * @author: Abigail Crystal García Bonilla C5F263
  * @author: Justin Andrés Badilla Ramírez C4C928
  * @author: Frank de Jesús Villalobos Elizondo C5K944
- * @date: 28 jun 2026
- * @version: 1.0
- * @description: Esta clase...
  */
-public class InterfazUsuario {
+public class Main {
  
     public static void main(String[] args) {
         try {
             ejecutarCalculadora();
-        } catch (RuntimeException e) {
-            // Cualquier error de logica (balanceo, division por cero, variable
-            // sin valor, caracter invalido, etc.) cae aqui.
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
  
     private static void ejecutarCalculadora() {
-        String expresion = JOptionPane.showInputDialog(null,
+        boolean repetir = true;
+        while(repetir){
+            String expresion = JOptionPane.showInputDialog(null,
                 "Calculadora Cientifica - Notacion Polaca Inversa\n\n"
                 + "Operadores: +  -  *  /  ^  sqrt  sen  cos  tan  facto\n"
-                + "Agrupacion: ( )   [ ]   { }\n"
+                + "Agrupaciones: ( )   [ ]   { }\n"
                 + "Ejemplo: (a+b)*sqrt(4)-sen(30)\n\n"
-                + "Ingrese la expresion:",
-                "Calculadora NPI", JOptionPane.QUESTION_MESSAGE);
+                + "(Recuerda no dejar espacios)\n"
+                + "Ingrese la expresion:");
  
-        if (expresion == null || expresion.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No se ingreso ninguna expresion. Se cierra el programa.");
-            return;
-        }
+            if (expresion == null || expresion.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No se ingresó ninguna expresion.");
+                repetir = false;
+                break;
+            }
  
-        expresion = expresion.replace(" ", "");
+            expresion = expresion.replace(" ", "");
  
-        // Paso 1: tokenizar
-        List<String> tokens = ColaFormulaOriginal.tokenizar(expresion);
+            // Tokenizamos la expresión
+            List<String> tokens = ColaFormulaOriginal.tokenizar(expresion);
  
-        // Paso 2: verificar balanceo
-        if (!Balanceo.verificar(tokens)) {
-            JOptionPane.showMessageDialog(null,
-                    "La expresion no esta balanceada (parentesis, corchetes o llaves).",
-                    "Error de balanceo", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            // Aseguramos que la formula esté balanceada
+            if (!Balanceo.verificar(tokens)) {
+                JOptionPane.showMessageDialog(null, "La expresion no esta balanceada (parentesis, corchetes o llaves).");
+                return;
+            }
  
-        // Paso 3: armar la ColaFormulaOriginal
-        Cola<String> colaFormulaOriginal = ColaFormulaOriginal.construirCola(tokens);
+            // Contruimos la ColaFormulaOriginal
+            Cola<String> colaFormulaOriginal = ColaFormulaOriginal.construirCola(tokens);
  
-        // Paso 4: convertir a notacion postfija (ColaFormulaPostfija)
-        Cola<String> colaFormulaPostfija = ConversionPostFija.convertir(colaFormulaOriginal);
+            // Convertirmos la fórmula a notacion postfija
+            Cola<String> colaFormulaPostfija = ConversionPostFija.convertir(colaFormulaOriginal);
  
-        // Paso 5: mostrar la formula en postfija, con los nombres completos.
-        // Usamos una copia para no dañar la cola que vamos a necesitar despues.
-        String postfijaLegible = ConversionPostFija.colaATextoLegible(colaFormulaPostfija.copiar());
-        JOptionPane.showMessageDialog(null,
-                "Expresion en notacion postfija:\n" + postfijaLegible,
-                "Notacion postfija", JOptionPane.INFORMATION_MESSAGE);
+            // Mostrarmos la fórmula como postfija
+            // Usamos una variable temporal para no dañar la actual
+            String postfijaTemp = ConversionPostFija.colaATextoLegible(colaFormulaPostfija.copiar());
+            JOptionPane.showMessageDialog(null, "Expresión en notación postfija:\n" + postfijaTemp);
  
-        // Paso 6: pedir el valor de cada variable, una sola vez cada una
-        HashMap<String, Double> valoresVariables = new HashMap<>();
-        for (String token : tokens) {
-            if (ColaFormulaOriginal.esVariable(token) && !valoresVariables.containsKey(token)) {
-                String entrada = JOptionPane.showInputDialog(null,
-                        "Ingrese el valor de la variable \"" + token + "\":");
-                if (entrada == null) {
-                    JOptionPane.showMessageDialog(null, "Operacion cancelada por el usuario.");
-                    return;
-                }
-                try {
-                    valoresVariables.put(token, Double.parseDouble(entrada.trim()));
-                } catch (NumberFormatException ex) {
-                    throw new RuntimeException("El valor ingresado para \"" + token + "\" no es un numero valido.");
+            HashMap<String, Double> variables = new HashMap<>(); // clave(variable, la letra)-valor(el número que vamos a guardar)
+            for (String token : tokens) {
+                // Solicitamos el valor de cada variable una única vez y se reutiliza
+                // En este caso verificamos en la formula original que sea una variable y que la variable no se haya registrado antes
+                if (ColaFormulaOriginal.esVariable(token) && !variables.containsKey(token)) {
+                    String entrada = JOptionPane.showInputDialog(null, "Ingrese el valor de la variable " + token + ":");
+                    if (entrada == null || entrada.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No se ingresó ningún valor");
+                        return;
+                    }
+                    try {
+                        variables.put(token, Double.parseDouble(entrada.trim()));// convertimos el valor en double y verificamos que no hayan espacios vacíos
+                    } catch (NumberFormatException ex) {
+                        throw new RuntimeException("Se deben ingresar solamente valores numéricos");
+                    }
                 }
             }
+ 
+            // Evaluamos la fórmula
+            double resultado = evaluarPostfija(colaFormulaPostfija, valoresVariables);
+
+
+ 
+            JOptionPane.showMessageDialog(null, "Resultado final: " + formatearResultado(resultado));
         }
- 
-        // Paso 7: evaluar la formula postfija
-        double resultado = evaluarPostfija(colaFormulaPostfija, valoresVariables);
- 
-        JOptionPane.showMessageDialog(null,
-                "Resultado final: " + formatearResultado(resultado),
-                "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }
- 
-    // ==========================================================
-    //  EVALUACION DE LA EXPRESION POSTFIJA
-    // ==========================================================
  
     private static double evaluarPostfija(Cola<String> postfija, HashMap<String, Double> variables) {
         Pila<Double> pila = new Pila<>();
@@ -107,13 +102,13 @@ public class InterfazUsuario {
             } else if (ColaFormulaOriginal.esVariable(token)) {
                 Double valor = variables.get(token);
                 if (valor == null) {
-                    throw new RuntimeException("No se encontro el valor de la variable \"" + token + "\".");
+                    throw new RuntimeException("No se encontró el valor de la variable " + token);
                 }
                 pila.apilar(valor);
  
             } else if (ColaFormulaOriginal.esOperadorBinario(token)) {
-                double x = pila.desapilar(); // el que entro de ultimo
-                double y = pila.desapilar(); // el que entro antes
+                double x = pila.desapilar(); // el que entra de último
+                double y = pila.desapilar(); // el que entró antes
                 pila.apilar(aplicarOperadorBinario(y, token, x));
  
             } else if (ColaFormulaOriginal.esOperadorUnario(token)) {
@@ -123,7 +118,7 @@ public class InterfazUsuario {
         }
  
         if (pila.estaVacia()) {
-            throw new RuntimeException("No se pudo calcular un resultado con la expresion dada.");
+            throw new RuntimeException("No se pudo calcular un resultado");
         }
         return pila.desapilar();
     }
@@ -138,13 +133,13 @@ public class InterfazUsuario {
                 return y * x;
             case "/":
                 if (x == 0) {
-                    throw new RuntimeException("Error: division entre cero.");
+                    throw new RuntimeException("No se puede dividir entre cero.");
                 }
                 return y / x;
             case "^":
                 return Math.pow(y, x);
             default:
-                throw new RuntimeException("Operador binario desconocido: " + operador);
+                throw new RuntimeException(e.getMessage());
         }
     }
  
@@ -169,7 +164,7 @@ public class InterfazUsuario {
     }
  
     private static double factorial(double valor) {
-        if (valor < 0 || valor != Math.floor(valor)) {
+        if (valor < 0 || valor != Math.floor(valor)) {// Math.floor para redondear un número
             throw new RuntimeException("Error: el factorial solo aplica para enteros positivos (o cero).");
         }
         int n = (int) valor;
@@ -180,8 +175,7 @@ public class InterfazUsuario {
         return resultado;
     }
  
-    // Si el resultado es un numero entero (ej: 20.0) lo mostramos sin
-    // decimales para que se vea mas limpio.
+    // Si el resultado es un numero entero como 20.0 lo mostramos sin decimales para que se vea más limpio.
     private static String formatearResultado(double resultado) {
         if (resultado == Math.floor(resultado) && !Double.isInfinite(resultado)) {
             return String.valueOf((long) resultado);
