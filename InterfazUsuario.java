@@ -9,9 +9,12 @@ import javax.swing.JOptionPane;
  * @author: Abigail Crystal García Bonilla C5F263
  * @author: Justin Andrés Badilla Ramírez C4C928
  * @author: Frank de Jesús Villalobos Elizondo C5K944
- * @date: 28 jun 2026
+ * @date: 01 jul 2026
  * @version: 1.0
- * @description: Esta clase...
+ * @description: Esta clase contiene el main, inicializa la interfaz
+ *               grafica de la calculadora cientifica por medio de
+ *               JOptionPane para permitir las entradas del usuario
+ *               y sus salidas.
  */
 public class InterfazUsuario {
  

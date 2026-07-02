@@ -7,15 +7,12 @@ import java.util.List;
  * @author: Abigail Crystal García Bonilla C5F263
  * @author: Justin Andrés Badilla Ramírez C4C928
  * @author: Frank de Jesús Villalobos Elizondo C5K944
- * @date: 28 jun 2026
+ * @date: 01 jul 2026
  * @version: 1.0
  * @description: Esta clase verifica que los simbolos de agrupación de una expresión
  *               matemática estén balanceados correctamente, para esto utiliza una
- *               Pila para rastrear los símbolos de apertura encontrados
- *               y verificar que los simbolos de apertura encontrandos que cada símbolo de cierre corresponda al
- *               símbolo de apertura más reciente.
- *
- *               Símbolos soportados: paréntesis (), corchetes [] y llaves {}.
+ *               Pila para identificar los símbolos de apertura encontrados
+ *               y verificar que haya símbolo de cierre que le correspondan.
  */
 public class Balanceo {
  

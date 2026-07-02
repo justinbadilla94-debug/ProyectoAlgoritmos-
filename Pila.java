@@ -5,9 +5,11 @@ package rpncalculadora;
  * @author: Abigail Crystal García Bonilla C5F263
  * @author: Justin Andrés Badilla Ramírez C4C928
  * @author: Frank de Jesús Villalobos Elizondo C5K944
- * @date: 28 jun 2026
+ * @date: 01 jul 2026
  * @version: 1.0
- * @description: Esta clase...
+ * @description: Esta clase es una implementación genérica de una Pila,
+ *               la cual utiliza una lista enlazada simple en su estructura.
+ *               Utiliza el principio LIFO para su almacenamiento de nodo.
  */
 public class Pila<T> {
  

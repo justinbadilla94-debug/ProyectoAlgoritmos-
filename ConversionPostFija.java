@@ -5,9 +5,11 @@ package rpncalculadora;
  * @author: Abigail Crystal García Bonilla C5F263
  * @author: Justin Andrés Badilla Ramírez C4C928
  * @author: Frank de Jesús Villalobos Elizondo C5K944
- * @date: 28 jun 2026
+ * @date: 01 jul 2026
  * @version: 1.0
- * @description: Esta clase...
+ * @description: Esta clase está encargada de convertir una expresión
+ *               matematica en notación infija (o sea la original), en
+ *               notación postfija (Polaca Inversa).
  */
 public class ConversionPostFija {
  
