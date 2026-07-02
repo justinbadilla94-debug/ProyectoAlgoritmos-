@@ -10,7 +10,7 @@ package rpncalculadora;
  */
 public class ConversionPostFija {
  
-    public static Cola<String> convertir(Cola<String> colaOriginal) {
+    public static Cola<String> convertir(Cola<String> colaOriginal) throws ColaException, PilaException {
         Cola<String> postfija = new Cola<>();
         Pila<String> pilaAux = new Pila<>();
  
@@ -80,7 +80,7 @@ public class ConversionPostFija {
     // Convierte una cola de tokens a un String, cambiando los simbolos
     // internos (%, #, &, $, !) de vuelta a su nombre completo para que
     // el usuario entienda lo que esta viendo en pantalla.
-    public static String colaATextoLegible(Cola<String> cola) {
+    public static String colaATextoLegible(Cola<String> cola) throws ColaException {
         StringBuilder sb = new StringBuilder();
         while (!cola.estaVacia()) {
             sb.append(traducirSimbolo(cola.desencolar())).append(" ");
