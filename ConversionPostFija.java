@@ -58,10 +58,10 @@ public class ConversionPostFija {
         switch (token) {
             case "^":
             case "$": // sqrt
-            case "%": // sen
-            case "#": // cos
-            case "&": // tan
-            case "!": // facto
+            case "%": // seno
+            case "#": // coseno
+            case "&": // tangente
+            case "!": // factorial 
                 return 4;
             case "*":
             case "/":
@@ -78,9 +78,7 @@ public class ConversionPostFija {
         }
     }
  
-    // Convierte una cola de tokens a un String, cambiando los simbolos
-    // internos (%, #, &, $, !) de vuelta a su nombre completo para que
-    // el usuario entienda lo que esta viendo en pantalla.
+    // Convierte una cola de tokens a un String, cambiando los simbolos internos (%, #, &, $, !) de vuelta a su nombre completo para que el usuario entienda lo que esta viendo en pantalla.
     public static String colaATextoLegible(Cola<String> cola) throws ColaException {
         StringBuilder sb = new StringBuilder();
         while (!cola.estaVacia()) {
