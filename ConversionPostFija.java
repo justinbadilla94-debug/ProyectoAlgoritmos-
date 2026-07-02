@@ -19,25 +19,20 @@ public class ConversionPostFija {
             String token = colaOriginal.desencolar();
  
             if (ColaFormulaOriginal.esNumero(token) || ColaFormulaOriginal.esVariable(token)) {
-                // operando -> directo a la cola postfija
                 postfija.encolar(token);
  
             } else if (ColaFormulaOriginal.esAperturaSimbolo(token)) {
-                // simbolo de apertura -> se apila sin importar que haya en la cima
                 pilaTemporal.apilar(token);
  
             } else if (ColaFormulaOriginal.esCierreSimbolo(token)) {
-                // se desapila todo hasta encontrar la apertura correspondiente
                 while (!pilaTemporal.estaVacia() && !ColaFormulaOriginal.esAperturaSimbolo(pilaTemporal.verTope())) {
                     postfija.encolar(pilaTemporal.desapilar());
                 }
                 if (!pilaTemporal.estaVacia()) {
-                    pilaTemporal.desapilar(); // se descarta, no se agrega a la cola
+                    pilaTemporal.desapilar();
                 }
  
             } else if (ColaFormulaOriginal.esOperador(token)) {
-                // se apila si su prioridad es mayor a la del tope (o si esta vacia)
-                // si no, se van sacando los de la pila hasta que se pueda apilar
                 while (!pilaTemporal.estaVacia() && prioridad(pilaTemporal.verTope()) >= prioridad(token)) {
                     postfija.encolar(pilaTemporal.desapilar());
                 }
