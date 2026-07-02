@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rpncalculadora;
 
 import java.util.HashMap;
@@ -9,8 +5,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author justi
+ * @author: Sebastian Alvarado Garcia C5C341
+ * @author: Abigail Crystal García Bonilla C5F263
+ * @author: Justin Andrés Badilla Ramírez C4C928
+ * @author: Frank de Jesús Villalobos Elizondo C5K944
+ * @date: 28 jun 2026
+ * @version: 1.0
+ * @description: Esta clase...
  */
 public class InterfazUsuario {
  
