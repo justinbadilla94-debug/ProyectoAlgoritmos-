@@ -10,19 +10,19 @@ package rpncalculadora;
  */
 public class Pila<T> {
  
-    private Nodo<T> tope;
+    private Nodo<T> head;
     private int tamanio;
  
     public Pila() {
-        tope = null;
+        head = null;
         tamanio = 0;
     }
  
     // Mete un elemento en el tope de la pila
     public void apilar(T dato) {
         Nodo<T> nuevo = new Nodo<>(dato);
-        nuevo.siguiente = tope;
-        tope = nuevo;
+        nuevo.siguiente = head;
+        head = nuevo;
         tamanio++;
     }
  
@@ -31,18 +31,18 @@ public class Pila<T> {
         if (estaVacia()) {
             throw new RuntimeException("No se puede desapilar: la pila esta vacia.");
         }
-        T dato = tope.dato;
-        tope = tope.siguiente;
+        T dato = head.dato;
+        head = head.siguiente;
         tamanio--;
         return dato;
     }
  
     // Devuelve el elemento del tope sin sacarlo
-    public T verTope() {
+    public T verHead() {
         if (estaVacia()) {
             throw new RuntimeException("La pila esta vacia.");
         }
-        return tope.dato;
+        return head.dato;
     }
  
     public boolean estaVacia() {
